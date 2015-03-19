@@ -1,0 +1,32 @@
+{
+    "name": "stev/lista-firme-bundle",
+    "description": "Symfony 2 Bundle for Lista Firme Romanian API",
+    "type": "symfony-bundle",
+    "authors": [{
+            "name": "Stefan Matei",
+            "email": "stev.matei@gmail.com"
+        }],
+    "keywords": [
+        "lista firme bundle"
+    ],
+    "license": [
+        "MIT"
+    ],
+    "require": {
+        "php": ">=5.3",
+        "symfony/framework-bundle": "2.*",
+        "symfony/symfony": "2.*",
+        "guzzlehttp/guzzle": "4.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Stev\\ListaFirmeBundle": ""
+        }
+    },
+    "target-dir": "Stev/ListFirmeBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}

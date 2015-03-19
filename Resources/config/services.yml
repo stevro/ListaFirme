@@ -1,0 +1,4 @@
+services:
+    stev.lista_firme:
+        class: Stev\ListaFirmeBundle\Lib\ListaFirme
+        arguments: [%stev_lista_firme.username%, %stev_lista_firme.password%]
