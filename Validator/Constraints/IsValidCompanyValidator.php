@@ -21,7 +21,7 @@ class IsValidCompanyValidator extends ConstraintValidator
 
     public function __construct(\Stev\ListaFirmeBundle\Lib\ListaFirme $listaFirme)
     {
-        $this->listFirme = $listaFirme;
+        $this->listaFirme = $listaFirme;
     }
 
     public function validate($company, Constraint $constraint)
@@ -33,12 +33,14 @@ class IsValidCompanyValidator extends ConstraintValidator
         try {
             $companyVerification = $this->listaFirme->checkCompanyByCUI($company->getCif());
         } catch (\Exception $e) {
-            $this->context->buildViolation($constraint->message)
-                    ->setParameter('%string%', $company->getCif())
-                    ->addViolation();
+//            $this->context->buildViolation($constraint->message)
+//                    ->setParameter('%string%', $company->getCif())
+//                    ->addViolation();
             $this->context->buildViolation($constraint->details)
                     ->setParameter('%string%', $e->getMessage())
                     ->addViolation();
+
+            return;
         }
 
 //        {"Raspuns":"valid","Nume":"BORG DESIGN SRL","CUI":"14837428","NrInmatr":"J40/8118/2002",
