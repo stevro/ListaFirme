@@ -13,6 +13,10 @@ use Symfony\Component\Validator\Constraint;
  *
  * @author stefan
  */
+
+/**
+ * @Annotation
+ */
 class IsValidCompany extends Constraint
 {
 
