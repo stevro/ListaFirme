@@ -16,25 +16,25 @@ interface CompanyInterface
 
     public function getLongName();
 
-    public function setLongName();
+    public function setLongName($longName);
 
     public function getCif();
 
-    public function setCif();
+    public function setCif($cif);
 
     public function getAddress();
 
-    public function setAddress();
+    public function setAddress($address);
 
     public function getCity();
 
-    public function setCity();
+    public function setCity($city);
 
     public function getCountry();
 
-    public function setCountry();
+    public function setCountry($country);
 
-    public function setRegistrationNumber();
+    public function setRegistrationNumber($registrationNumber);
 
     public function getRegistrationNumber();
 }
