@@ -26,4 +26,4 @@ stev_lista_firme:
     $response = $listaFirme->checkCompanyByCUI($cui);
 </code></pre>
 
-Lista Firme API documentation can be found at http://www.verificaretva.ro/serviciul_tva_api_web_service.htm
+Lista Firme API documentation can be found at http://www.verificaretva.ro/serviciul_tva_api_web_service.htm 
