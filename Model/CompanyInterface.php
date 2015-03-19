@@ -11,7 +11,7 @@ namespace Stev\ListaFirmeBundle\Model;
  *
  * @author stefan
  */
-class CompanyInterface
+interface CompanyInterface
 {
 
     public function getLongName();
