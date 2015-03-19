@@ -23,7 +23,7 @@
             "Stev\\ListaFirmeBundle": ""
         }
     },
-    "target-dir": "Stev/ListFirmeBundle",
+    "target-dir": "Stev/ListaFirmeBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "0.1.x-dev"
