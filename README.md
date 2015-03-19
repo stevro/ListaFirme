@@ -9,7 +9,7 @@ Add this to composer.json
 
 Add this in app/AppKernel.php
 <pre><code>
-new Stev\GeonamesBundle\StevGeonamesBundle()
+new Stev\ListaFirmeBundle\StevListaFirmeBundle()
 </code></pre>
 
 Add this in app/config.yml
