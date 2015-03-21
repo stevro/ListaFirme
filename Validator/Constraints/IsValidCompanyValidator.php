@@ -33,12 +33,12 @@ class IsValidCompanyValidator extends ConstraintValidator
         try {
             $companyVerification = $this->listaFirme->checkCompanyByCUI($company->getCif());
         } catch (\Exception $e) {
-//            $this->context->buildViolation($constraint->message)
-//                    ->setParameter('%string%', $company->getCif())
-//                    ->addViolation();
-            $this->context->buildViolation($constraint->details)
-                    ->setParameter('%string%', $e->getMessage())
+            $this->context->buildViolation($constraint->message)
+                    ->setParameter('%string%', $company->getCif())
                     ->addViolation();
+//            $this->context->buildViolation($constraint->details)
+//                    ->setParameter('%string%', $e->getMessage())
+//                    ->addViolation();
 
             return;
         }
@@ -48,17 +48,17 @@ class IsValidCompanyValidator extends ConstraintValidator
 //"Stare":"INREGISTRAT DIN DATA 25 AUGUST 2006","Actualizat":"2015/01/14","TVA":"1",
 //"TVAincasare":"0","DataTVA":"2015/01/14"}
 
-        $company->setLongName($companyVerification['Nume']);
-        $address = $companyVerification['Judet'] .
-                ' ' . $companyVerification['Localitate'] .
-                ' ' . $companyVerification['Tip'] .
-                ' ' . $companyVerification['Adresa'] .
-                ' ' . $companyVerification['Nr'];
+        $company->setLongName($companyVerification->Nume);
+        $address = $companyVerification->Judet .
+                ' ' . $companyVerification->Localitate .
+                ' ' . $companyVerification->Tip .
+                ' ' . $companyVerification->Adresa .
+                ' ' . $companyVerification->Nr;
 
         $company->setAddress($address);
-        $company->setCity($companyVerification['Localitate']);
+        $company->setCity($companyVerification->Localitate);
         $company->setCountry('RO');
-        $company->setRegistrationNumber($companyVerification['NrInmatr']);
+        $company->setRegistrationNumber($companyVerification->NrInmatr);
     }
 
 }

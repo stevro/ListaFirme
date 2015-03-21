@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraint;
 class IsValidCompany extends Constraint
 {
 
-    public $message = 'The CIF %string% you provided must be valid.';
+    public $message = 'CIF-ul %string% nu este valid.';
     public $details = '%string%';
 
     public function getTargets()
