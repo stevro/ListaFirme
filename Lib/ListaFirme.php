@@ -58,7 +58,8 @@ class ListaFirme
      */
     public function checkCompanyByCUI($cui, \DateTime $date = null)
     {
-        if(true === $this->offline){
+
+        if (true === $this->offline) {
             return $this->mockResponse($cui);
         }
 
@@ -90,9 +91,24 @@ class ListaFirme
 
     public function mockResponse($cui)
     {
-//        return array(
-//            'Nume'=>
-//        )
+        $faker = \Faker\Factory::create();
+        $faker->addProvider(new \CompanyNameGenerator\FakerProvider($faker));
+
+        return (object) array(
+                    'Nume' => $faker->company . ' ' . 'SRL',
+                    'CUI' => $cui,
+                    'NrInmatr' => 'J40/' . $faker->randomNumber(4) . '/2014',
+                    'Judet' => $faker->citySuffix,
+                    'Localitate' => $faker->city,
+                    'Tip' => 'Str',
+                    'Adresa' => $faker->address,
+                    'Nr' => $faker->randomNumber(2),
+                    'Stare' => 'Inregistrat de curand',
+                    'Actualizat' => $faker->date(),
+                    'TVA' => rand(0, 1),
+                    'TVAincasare' => rand(0, 1),
+                    'DataTVA' => $faker->date()
+        );
     }
 
 }

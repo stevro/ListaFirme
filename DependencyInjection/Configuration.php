@@ -31,8 +31,7 @@ class Configuration implements ConfigurationInterface
                         ->isRequired()
                     ->end()
                     ->scalarNode('offline')
-                        ->defaultValue(false)
-                        ->isOptional()
+                        ->defaultFalse()
                     ->end()
                 ->end();
 
