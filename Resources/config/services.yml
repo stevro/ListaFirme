@@ -1,7 +1,10 @@
 services:
     stev.lista_firme:
         class: Stev\ListaFirmeBundle\Lib\ListaFirme
-        arguments: [%stev_lista_firme.username%, %stev_lista_firme.password%]
+        arguments:
+            - %stev_lista_firme.username%
+            - %stev_lista_firme.password%
+            - %stev_lista_firme.offline%
 
     stev.lista_firme.validator.is_valid_company:
         class: Stev\ListaFirmeBundle\Validator\Constraints\IsValidCompanyValidator

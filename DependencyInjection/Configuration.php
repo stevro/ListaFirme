@@ -30,6 +30,10 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                         ->isRequired()
                     ->end()
+                    ->scalarNode('offline')
+                        ->defaultValue(false)
+                        ->isOptional()
+                    ->end()
                 ->end();
 
         return $treeBuilder;

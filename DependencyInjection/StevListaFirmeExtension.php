@@ -27,6 +27,7 @@ class StevListaFirmeExtension extends Extension
 
         $container->setParameter('stev_lista_firme.username', $config['username']);
         $container->setParameter('stev_lista_firme.password', $config['password']);
+        $container->setParameter('stev_lista_firme.offline', $config['offline']);
 
         $loader->load('services.yml');
     }
