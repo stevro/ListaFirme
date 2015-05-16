@@ -16,7 +16,9 @@
         "php": ">=5.3",
         "symfony/framework-bundle": "2.*",
         "symfony/symfony": "2.*",
-        "guzzlehttp/guzzle": "4.*"
+        "guzzlehttp/guzzle": "4.*",
+        "fzaninotto/faker": "1.5.*@dev",
+        "fzaninotto/company-name-generator": "dev-master"
     },
     "autoload": {
         "psr-0": {

@@ -21,6 +21,7 @@ class ListaFirme
     protected $baseUri = 'http://www.verificaretva.ro/api/apiv2.aspx';
     protected $username = 'demo';
     protected $password = 'demo';
+    protected $offline = false;
 
     const ERROR_001_INVALID_RESPONSE = 'Eroare aplicatie. Va rugam sa contactati echipa de suport tehnic.';
     const ERROR_002_INVALID_CUI = 'CUI-ul transmis nu este valid conform algoritmului de validare.';
@@ -34,11 +35,13 @@ class ListaFirme
      *
      * @param string $username
      * @param string $password
+     * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      */
-    public function __construct($username, $password)
+    public function __construct($username, $password, $offline = false)
     {
         $this->username = $username;
         $this->password = $password;
+        $this->offline = $offline;
     }
 
     /**
@@ -55,6 +58,10 @@ class ListaFirme
      */
     public function checkCompanyByCUI($cui, \DateTime $date = null)
     {
+        if(true === $this->offline){
+            return $this->mockResponse($cui);
+        }
+
         $client = new Client();
 
         $date = $date ? $date : new \DateTime();
@@ -79,6 +86,13 @@ class ListaFirme
         }
 
         return $data;
+    }
+
+    public function mockResponse($cui)
+    {
+//        return array(
+//            'Nume'=>
+//        )
     }
 
 }
