@@ -15,8 +15,7 @@ use GuzzleHttp\Client;
  *
  * http://www.verificaretva.ro/serviciul_tva_api_web_service.htm
  */
-class ListaFirme
-{
+class ListaFirme {
 
     protected $baseUri = 'http://www.verificaretva.ro/api/apiv2.aspx';
     protected $username = 'demo';
@@ -37,8 +36,7 @@ class ListaFirme
      * @param string $password
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      */
-    public function __construct($username, $password, $offline = false)
-    {
+    public function __construct($username, $password, $offline = false) {
         $this->username = $username;
         $this->password = $password;
         $this->offline = $offline;
@@ -56,14 +54,18 @@ class ListaFirme
       "Stare":"INREGISTRAT DIN DATA 25 AUGUST 2006","Actualizat":"2015/01/14","TVA":"1",
       "TVAincasare":"0","DataTVA":"2015/01/14"}
      */
-    public function checkCompanyByCUI($cui, \DateTime $date = null)
-    {
+    public function checkCompanyByCUI($cui, \DateTime $date = null) {
 
-        if (true === $this->offline) {
-            return $this->mockResponse($cui);
-        }
+//        if (true === $this->offline) {
+//            return $this->mockResponse($cui);
+//        }
 
         $client = new Client();
+
+        $prefix = 'RO';
+        if (0 === strpos($cui, $prefix)) {
+            $cui = substr($cui, strlen($prefix));
+        }
 
         $date = $date ? $date : new \DateTime();
 
@@ -89,8 +91,7 @@ class ListaFirme
         return $data;
     }
 
-    public function mockResponse($cui)
-    {
+    public function mockResponse($cui) {
         $faker = \Faker\Factory::create();
         $faker->addProvider(new \CompanyNameGenerator\FakerProvider($faker));
 
