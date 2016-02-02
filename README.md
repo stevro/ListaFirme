@@ -17,6 +17,8 @@ Add this in app/config.yml
 stev_lista_firme:
     username: demo
     password: demo
+    offline: false
+    enabled: true
 </code></pre>
 
 ## 2. Usage
