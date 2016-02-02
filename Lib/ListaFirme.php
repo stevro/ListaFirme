@@ -21,6 +21,7 @@ class ListaFirme {
     protected $username = 'demo';
     protected $password = 'demo';
     protected $offline = false;
+    protected $enabled = false;
 
     const ERROR_001_INVALID_RESPONSE = 'Eroare aplicatie. Va rugam sa contactati echipa de suport tehnic.';
     const ERROR_002_INVALID_CUI = 'CUI-ul transmis nu este valid conform algoritmului de validare.';
@@ -36,10 +37,11 @@ class ListaFirme {
      * @param string $password
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      */
-    public function __construct($username, $password, $offline = false) {
+    public function __construct($username, $password, $offline = false, $enabled = true) {
         $this->username = $username;
         $this->password = $password;
         $this->offline = $offline;
+        $this->enabled = $enabled;
     }
 
     /**
@@ -56,9 +58,13 @@ class ListaFirme {
      */
     public function checkCompanyByCUI($cui, \DateTime $date = null) {
 
-//        if (true === $this->offline) {
-//            return $this->mockResponse($cui);
-//        }
+        if (false === $this->enabled) {
+            return null;
+        }
+
+        if (true === $this->offline) {
+            return $this->mockResponse($cui);
+        }
 
         $client = new Client();
 

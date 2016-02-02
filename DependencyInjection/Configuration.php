@@ -33,6 +33,9 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('offline')
                         ->defaultFalse()
                     ->end()
+                    ->scalarNode('enabled')
+                        ->defaultTrue()
+                    ->end()
                 ->end();
 
         return $treeBuilder;

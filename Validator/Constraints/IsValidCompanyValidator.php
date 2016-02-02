@@ -14,24 +14,21 @@ use Symfony\Component\Validator\ConstraintValidator;
  *
  * @author stefan
  */
-class IsValidCompanyValidator extends ConstraintValidator
-{
+class IsValidCompanyValidator extends ConstraintValidator {
 
     protected $listaFirme;
 
-    public function __construct(\Stev\ListaFirmeBundle\Lib\ListaFirme $listaFirme)
-    {
+    public function __construct(\Stev\ListaFirmeBundle\Lib\ListaFirme $listaFirme) {
         $this->listaFirme = $listaFirme;
     }
 
-    public function validate($company, Constraint $constraint)
-    {
+    public function validate($company, Constraint $constraint) {
         if (!$company instanceof \Stev\ListaFirmeBundle\Model\CompanyInterface) {
             throw new \RuntimeException('Your class must implement \Stev\ListaFirmeBundle\Model\CompanyInterface, instead you provided ' . get_class($company));
         }
 
         try {
-            if(!in_array(strtoupper($company->getCountry()), array('RO', 'ROMANIA'))){
+            if (!in_array(strtoupper($company->getCountry()), array('RO', 'ROMANIA'))) {
                 return;
             }
             $companyVerification = $this->listaFirme->checkCompanyByCUI($company->getCif());
@@ -39,10 +36,11 @@ class IsValidCompanyValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                     ->setParameter('%string%', $company->getCif())
                     ->addViolation();
-//            $this->context->buildViolation($constraint->details)
-//                    ->setParameter('%string%', $e->getMessage())
-//                    ->addViolation();
 
+            return;
+        }
+
+        if (null === $companyVerification) {
             return;
         }
 
