@@ -75,7 +75,7 @@ class ListaFirme {
 
         $date = $date ? $date : new \DateTime();
 
-        $options['body'] = array(
+        $options['form_params'] = array(
             'nume' => $this->username,
             'pwd' => $this->password,
             'cui' => trim($cui),
