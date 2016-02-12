@@ -14,15 +14,18 @@ use Symfony\Component\Validator\ConstraintValidator;
  *
  * @author stefan
  */
-class IsValidCompanyValidator extends ConstraintValidator {
+class IsValidCompanyValidator extends ConstraintValidator
+{
 
     protected $listaFirme;
 
-    public function __construct(\Stev\ListaFirmeBundle\Lib\ListaFirme $listaFirme) {
+    public function __construct(\Stev\ListaFirmeBundle\Lib\ListaFirme $listaFirme)
+    {
         $this->listaFirme = $listaFirme;
     }
 
-    public function validate($company, Constraint $constraint) {
+    public function validate($company, Constraint $constraint)
+    {
         if (!$company instanceof \Stev\ListaFirmeBundle\Model\CompanyInterface) {
             throw new \RuntimeException('Your class must implement \Stev\ListaFirmeBundle\Model\CompanyInterface, instead you provided ' . get_class($company));
         }
@@ -40,26 +43,15 @@ class IsValidCompanyValidator extends ConstraintValidator {
             return;
         }
 
-        if (null === $companyVerification) {
+        if (!$companyVerification instanceof \Stev\ListaFirmeBundle\Lib\Response) {
             return;
         }
 
-//        {"Raspuns":"valid","Nume":"BORG DESIGN SRL","CUI":"14837428","NrInmatr":"J40/8118/2002",
-//"Judet":"BUCURESTI","Localitate":"BUCURESTI","Tip":"STR.","Adresa":"DEMOCRATIEI","Nr":"4",
-//"Stare":"INREGISTRAT DIN DATA 25 AUGUST 2006","Actualizat":"2015/01/14","TVA":"1",
-//"TVAincasare":"0","DataTVA":"2015/01/14"}
-
-        $company->setLongName($companyVerification->Nume);
-        $address = $companyVerification->Judet .
-                ' ' . $companyVerification->Localitate .
-                ' ' . $companyVerification->Tip .
-                ' ' . $companyVerification->Adresa .
-                ' ' . $companyVerification->Nr;
-
-        $company->setAddress($address);
-        $company->setCity($companyVerification->Localitate);
+        $company->setLongName($companyVerification->getName());
+        $company->setAddress($companyVerification->getFullAddress());
+        $company->setCity($companyVerification->getLocalitate());
         $company->setCountry('RO');
-        $company->setRegistrationNumber($companyVerification->NrInmatr);
+        $company->setRegistrationNumber($companyVerification->getNrInmatr());
     }
 
 }

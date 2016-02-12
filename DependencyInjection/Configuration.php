@@ -19,16 +19,25 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('stev_lista_firme');
-
+        
+        $supportedCheckers = array('listaFirme', 'mFin');
+        
         $rootNode
                 ->children()
-                    ->scalarNode('username')
-                        ->cannotBeEmpty()
+                    ->scalarNode('cifChecker')
+                        ->validate()
+                            ->ifNotInArray($supportedCheckers)
+                            ->thenInvalid('The cifChecker %s is not supported. Please choose one of '.json_encode($supportedCheckers))
+                        ->end()
+                        ->cannotBeOverwritten()
                         ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->scalarNode('username')
+                        ->defaultValue('demo')
                     ->end()
                     ->scalarNode('password')
-                        ->cannotBeEmpty()
-                        ->isRequired()
+                        ->defaultValue('demo')
                     ->end()
                     ->scalarNode('offline')
                         ->defaultFalse()
