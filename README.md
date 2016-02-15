@@ -24,7 +24,16 @@ stev_lista_firme:
     pathToPhantom: path/to/bin/phantomjs' 
 </code></pre>
 
-Install phantomJS if you want to use the checker from the Finance Ministry. http://phantomjs.org/
+If you want to use Financy Ministry API you must add this to your composer.json
+
+<pre><code>
+"post-install-cmd": [
+    "PhantomInstaller\\Installer::installPhantomJS"
+],
+"post-update-cmd": [
+    "PhantomInstaller\\Installer::installPhantomJS"
+],
+</code></pre>
 
 ## 2. Usage
 <pre><code>
