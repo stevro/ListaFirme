@@ -19,7 +19,6 @@
         "guzzlehttp/guzzle": "6.*",
         "fzaninotto/faker": "1.*",
         "fzaninotto/company-name-generator": "dev-master",
-        "symfony/dom-crawler": "3.*",
         "jonnyw/php-phantomjs": "4.*"
     },
     "autoload": {
