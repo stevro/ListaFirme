@@ -27,14 +27,14 @@ class CIFChecker
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      * @param bool $enabled If you set it to false it will completly disable the checker.
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true)
+    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom)
     {
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
                 $this->checker = new ListaFirme($username, $password, $offline, $enabled);
                 break;
             case self::CHECKER_MFIN:
-                $this->checker = new MFin($offline, $enabled);
+                $this->checker = new MFin($offline, $enabled, $pathToPhantom);
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $cifChecker);

@@ -14,80 +14,119 @@ use JonnyW\PhantomJs\Client as PhantomClient;
  *
  * @author stefan
  */
-class MFin extends AbstractCIFChecker implements CIFCheckerInterface
-{
+class MFin extends AbstractCIFChecker implements CIFCheckerInterface {
 
     protected $baseUri = 'http://mfinante.ro/infocodfiscal.html';
+    protected $pathToPhantom = '/home/nima/NetBeansProjects/StevListaFirme/bin/phantomjs';
 
-    public function __construct($offline, $enabled)
-    {
+    public function __construct($offline, $enabled, $pathToPhantom) {
         parent::__construct($offline, $enabled);
+
+        $this->pathToPhantom = $pathToPhantom;
     }
 
-    protected function check($cui)
-    {
-//        $options['form_params'] = array(
-//            'cod' => trim($cui),
-//        );
-//
-//        $response = $this->client->post($this->baseUri, $options);
-//
-//        $ret = (string) $response->getBody();
+    protected function check($cui) {
 
-        $pathToPhatomJs = '/home/vagrant/phantomjs-2.1.1-linux-x86_64/bin/phantomjs';
+        $client = PhantomClient::getInstance();
+        $client->getEngine()->setPath($this->pathToPhantom);
+        /**
+         * @see JonnyW\PhantomJs\Message\Request 
+         * */
+        $request = $client->getMessageFactory()->createCaptureRequest($this->baseUri, 'POST');
+        $request->setDelay(5);
+        $request->setRequestData(array('cod' => $cui));
+        /**
+         * @see JonnyW\PhantomJs\Message\Response 
+         * */
+        $response = $client->getMessageFactory()->createResponse();
 
-        $pathToJsScript = '/home/vagrant/cp.dev/web/bundles/stevlistafirme/browser.js';
+        // Send the request
+        $client->send($request, $response);
 
-        $stdOut = exec(sprintf('%s %s 2>&1', $pathToPhatomJs, $pathToJsScript), $out);
+        if ($response->getStatus() === 200) {
 
-        var_dump($stdOut, $out);
-        die;
+            $company = $this->buildResponse($response->getContent());
+            $company->setCui($cui);
 
+            return $company;
+        }
 
-
-//        $data = $this->parse($ret);
-//
-//        if (false === $data || null === $data) {
-//            throw new \Exception('Invalid response from mFin');
-//        }
-
-        return $this->buildResponse($data);
+        throw new \Exception('CUI-ul transmis nu a putut fi validat! Raspunsul de la server este ' . $response->getStatus());
     }
 
     /**
      * 
      * @param string $data HTML response from mFin
      */
-    protected function parse($data)
-    {
+    protected function parse($data) {
         $crawler = new \Symfony\Component\DomCrawler\Crawler($data);
-        var_dump($crawler->html());
-        die;
-        $tables = $crawler->filter('body > table');
-        var_dump($tables);
-        die;
-        foreach ($tables as $table) {
-            dump($table->html());
+        $title = $crawler->filter('title');
+        if (strtoupper($title->text()) == 'REQUEST REJECTED') {
+            throw new \Exception('Site-ul Ministerului de Finante nu este disponibil! Va rugam reincercati in cateva minute.');
         }
+
+        $arr = $crawler->filter('#main table:first-child tr')->each(function(\Symfony\Component\DomCrawler\Crawler $node, $i) {
+            $text = $node->filter('td')->each(function($node, $i) {
+                return trim($node->text());
+            });
+
+            return $text;
+        });
+
+        return $arr;
     }
 
-    protected function buildResponse($data)
-    {
+    protected function buildResponse($data) {
+
+        $data = $this->parse($data);
+
         $response = new Response();
 
-//        $response->setNume($data->);
-//        $response->setCui($data->);
-//        $response->setNrInamtr($data->);
-//        $response->setJudet($data->);
-//        $response->setLocalitate($data->);
-//        $response->setTip($data->);
-//        $response->setAdresa($data->);
-//        $response->setNr($data->);
-//        $response->setStare($data->);
-//        $response->setActualizat($data->);
-//        $response->setTva($data->);
-//        $response->setTvaIncasare($data->);
-//        $response->setDataTva($data->);
+        foreach ($data as &$tmpData) {
+            $tmpData[0] = preg_replace('/\s+/', '', $tmpData[0]);
+            $tmpData[0] = strtolower(str_replace(array(':', '*', '(', ')'), '', $tmpData[0]));
+            isset($tmpData[1]) ? $tmpData[1] = preg_replace('/[\t]+/', '', preg_replace('/[\n]+/', '', $tmpData[1])) : '';
+        }
+
+        foreach ($data as $mFinData) {
+            switch ($mFinData[0]) {
+                case 'denumireplatitor':
+                    $response->setNume($mFinData[1]);
+                    break;
+                case 'adresa':
+                    $response->setAdresa($mFinData[1]);
+                    break;
+                case 'judetul':
+                    $response->setJudet($mFinData[1]);
+                    break;
+                case 'numardeinmatricularelaregistrulcomertului':
+                    $response->setNrInmatr($mFinData[1]);
+                    break;
+                case 'actautorizare':
+                    break;
+                case 'codulpostal':
+                    break;
+                case 'telefon':
+                    break;
+                case 'staresocietate':
+                    $response->setStare($mFinData[1]);
+                    break;
+                case 'observatiiprivindsocietateacomerciala':
+                    break;
+                case 'taxapevaloareaadaugatadataluariiinevidenta':
+                    if ($mFinData[1] === 'NU') {
+                        $response->setTva(false);
+                    } else {
+                        $response->setTva(true);
+                        $response->setDataTva($mFinData[1]);
+                    }
+                    break;
+                case 'staresocietate':
+                    $response->setActualizat($mFinData[1]);
+                default:
+                    break;
+            }
+        }
 
         return $response;
     }

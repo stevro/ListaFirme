@@ -11,7 +11,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/listafirme/{cui}")
-     * @Template()
      */
     public function indexAction($cui)
     {
@@ -20,10 +19,7 @@ class DefaultController extends Controller
 
         $response = $listaFirme->checkCompanyByCUI($cui);
 
-        var_dump($response);
-        die;
-
-        return $response;
+        dump($response);die;
     }
 
 }

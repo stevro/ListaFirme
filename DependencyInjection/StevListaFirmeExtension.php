@@ -12,14 +12,12 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class StevListaFirmeExtension extends Extension
-{
+class StevListaFirmeExtension extends Extension {
 
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
-    {
+    public function load(array $configs, ContainerBuilder $container) {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -29,13 +27,18 @@ class StevListaFirmeExtension extends Extension
             if (!isset($config['username']) || $config['password']) {
                 throw new \RuntimeException('Username and password are mandatory for listaFirme checker');
             }
+        } elseif ($config['cifChecker'] == \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_MFIN) {
+            if (!isset($config['pathToPhantom'])) {
+                throw new \RuntimeException('You must define the path to PhantomJS executable when using mfin checker');
+            }
         }
-        
+
         $container->setParameter('stev_lista_firme.cifChecker', $config['cifChecker']);
         $container->setParameter('stev_lista_firme.username', $config['username']);
         $container->setParameter('stev_lista_firme.password', $config['password']);
         $container->setParameter('stev_lista_firme.offline', $config['offline']);
         $container->setParameter('stev_lista_firme.enabled', $config['enabled']);
+        $container->setParameter('stev_lista_firme.pathToPhantom', $config['pathToPhantom']);
 
         $loader->load('services.yml');
     }

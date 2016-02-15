@@ -2,6 +2,7 @@
 
 namespace Stev\ListaFirmeBundle\DependencyInjection;
 
+use Stev\ListaFirmeBundle\Lib\CIFChecker;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,7 +21,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('stev_lista_firme');
         
-        $supportedCheckers = array('listaFirme', 'mFin');
+        $supportedCheckers = array(CIFChecker::CHECKER_LISTA_FIRME, CIFChecker::CHECKER_MFIN);
         
         $rootNode
                 ->children()
@@ -44,6 +45,8 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('enabled')
                         ->defaultTrue()
+                    ->end()
+                    ->scalarNode('pathToPhantom')
                     ->end()
                 ->end();
 
