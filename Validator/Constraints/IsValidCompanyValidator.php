@@ -14,18 +14,15 @@ use Symfony\Component\Validator\ConstraintValidator;
  *
  * @author stefan
  */
-class IsValidCompanyValidator extends ConstraintValidator
-{
+class IsValidCompanyValidator extends ConstraintValidator {
 
     protected $listaFirme;
 
-    public function __construct(\Stev\ListaFirmeBundle\Lib\CIFChecker $listaFirme)
-    {
+    public function __construct(\Stev\ListaFirmeBundle\Lib\CIFChecker $listaFirme) {
         $this->listaFirme = $listaFirme;
     }
 
-    public function validate($company, Constraint $constraint)
-    {
+    public function validate($company, Constraint $constraint) {
         if (!$company instanceof \Stev\ListaFirmeBundle\Model\CompanyInterface) {
             throw new \RuntimeException('Your class must implement \Stev\ListaFirmeBundle\Model\CompanyInterface, instead you provided ' . get_class($company));
         }
@@ -49,7 +46,9 @@ class IsValidCompanyValidator extends ConstraintValidator
 
         $company->setLongName($companyVerification->getNume());
         $company->setAddress($companyVerification->getFullAddress());
-        $company->setCity($companyVerification->getLocalitate() ? $companyVerification->getLocalitate() : '');
+        if ($companyVerification->getLocalitate()) {
+            $company->setCity($companyVerification->getLocalitate());
+        }
         $company->setCountry('RO');
         $company->setRegistrationNumber($companyVerification->getNrInmatr());
     }
