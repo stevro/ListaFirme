@@ -17,7 +17,7 @@ use JonnyW\PhantomJs\Client as PhantomClient;
 class MFin extends AbstractCIFChecker implements CIFCheckerInterface {
 
     protected $baseUri = 'http://mfinante.ro/infocodfiscal.html';
-    protected $pathToPhantom = '/home/nima/NetBeansProjects/StevListaFirme/bin/phantomjs';
+    protected $pathToPhantom = 'bin/phantomjs';
 
     public function __construct($offline, $enabled, $pathToPhantom) {
         parent::__construct($offline, $enabled);

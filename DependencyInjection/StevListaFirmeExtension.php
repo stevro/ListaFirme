@@ -29,7 +29,7 @@ class StevListaFirmeExtension extends Extension {
             }
         } elseif ($config['cifChecker'] == \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_MFIN) {
             if (!isset($config['pathToPhantom'])) {
-                throw new \RuntimeException('You must define the path to PhantomJS executable when using mfin checker');
+                $config['pathToPhantom'] = $container->getParameter('kernel.root_dir') . '/../bin/phantomjs';
             }
         }
 
