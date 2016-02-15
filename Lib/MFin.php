@@ -65,12 +65,16 @@ class MFin extends AbstractCIFChecker implements CIFCheckerInterface {
             throw new \Exception('Site-ul Ministerului de Finante nu este disponibil! Va rugam reincercati in cateva minute.');
         }
         
-        $table = $crawler->filter('#main table:first-child tr');
-        
-        if(!count($table)){
-            throw new \Exception('Site-ul Ministerului de Finante este in mentenanta! Va rugam reincercati in cateva minute.');
+        if (strstr($data, 'Nu exista agent economic cu acest cod fiscal')) {
+            throw new \Exception('CIF-ul introdus nu exista in baza de date Ministerului Finantelor.');
         }
         
+        $table = $crawler->filter('#main table:first-child tr');
+
+        if (!count($table)) {
+            throw new \Exception('Site-ul Ministerului de Finante este in mentenanta! Va rugam reincercati in cateva minute.');
+        }
+
         $arr = $table->each(function(\Symfony\Component\DomCrawler\Crawler $node, $i) {
             $text = $node->filter('td')->each(function($node, $i) {
                 return trim($node->text());
