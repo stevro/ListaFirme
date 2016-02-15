@@ -24,6 +24,8 @@ stev_lista_firme:
     pathToPhantom: path/to/bin/phantomjs' 
 </code></pre>
 
+Install phantomJS if you want to use the checker from the Finance Ministry. http://phantomjs.org/
+
 ## 2. Usage
 <pre><code>
 /* @var $listaFirme \Stev\ListaFirmeBundle\Lib\ListaFirme */
