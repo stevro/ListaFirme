@@ -24,7 +24,7 @@ stev_lista_firme:
     pathToPhantom: path/to/bin/phantomjs' 
 </code></pre>
 
-If you want to use Financy Ministry API you must add this to your composer.json
+If you want to use Finance Ministry API you must add this to your composer.json
 
 <pre><code>
 "post-install-cmd": [
