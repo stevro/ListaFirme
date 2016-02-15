@@ -174,7 +174,7 @@ class Response
 
     public function getFullAddress()
     {
-        $address = $this->getJudet();
+        $address = $this->getJudet() . ' ';
 
         if (strlen($this->getLocalitate()) > 0) {
             $address .= $this->getLocalitate() . ' ';
@@ -192,7 +192,7 @@ class Response
             $address .= $this->getNr() . ' ';
         }
 
-        return $address;
+        return rtrim($address);
     }
 
 //
