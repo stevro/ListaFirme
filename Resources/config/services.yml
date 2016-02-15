@@ -1,11 +1,13 @@
 services:
     stev.lista_firme:
-        class: Stev\ListaFirmeBundle\Lib\ListaFirme
+        class: Stev\ListaFirmeBundle\Lib\CIFChecker
         arguments:
+            - %stev_lista_firme.cifChecker%
             - %stev_lista_firme.username%
             - %stev_lista_firme.password%
             - %stev_lista_firme.offline%
             - %stev_lista_firme.enabled%
+            - %stev_lista_firme.pathToPhantom%
 
     stev.lista_firme.validator.is_valid_company:
         class: Stev\ListaFirmeBundle\Validator\Constraints\IsValidCompanyValidator

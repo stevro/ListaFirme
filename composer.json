@@ -18,7 +18,9 @@
         "symfony/symfony": "2.*",
         "guzzlehttp/guzzle": "6.*",
         "fzaninotto/faker": "1.*",
-        "fzaninotto/company-name-generator": "dev-master"
+        "fzaninotto/company-name-generator": "dev-master",
+        "symfony/dom-crawler": "3.*",
+        "jonnyw/php-phantomjs": "4.*"
     },
     "autoload": {
         "psr-0": {
@@ -30,5 +32,14 @@
         "branch-alias": {
             "dev-master": "0.2.x-dev"
         }
+    },
+    "post-install-cmd": [
+        "PhantomInstaller\\Installer::installPhantomJS"
+    ],
+    "post-update-cmd": [
+        "PhantomInstaller\\Installer::installPhantomJS"
+    ],
+    "config": {
+        "bin-dir": "bin"
     }
 }
