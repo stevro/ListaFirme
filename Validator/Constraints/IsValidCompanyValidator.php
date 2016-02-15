@@ -19,7 +19,7 @@ class IsValidCompanyValidator extends ConstraintValidator
 
     protected $listaFirme;
 
-    public function __construct(\Stev\ListaFirmeBundle\Lib\ListaFirme $listaFirme)
+    public function __construct(\Stev\ListaFirmeBundle\Lib\CIFChecker $listaFirme)
     {
         $this->listaFirme = $listaFirme;
     }
@@ -47,9 +47,9 @@ class IsValidCompanyValidator extends ConstraintValidator
             return;
         }
 
-        $company->setLongName($companyVerification->getName());
+        $company->setLongName($companyVerification->getNume());
         $company->setAddress($companyVerification->getFullAddress());
-        $company->setCity($companyVerification->getLocalitate());
+        $company->setCity($companyVerification->getLocalitate() ? $companyVerification->getLocalitate() : '');
         $company->setCountry('RO');
         $company->setRegistrationNumber($companyVerification->getNrInmatr());
     }
