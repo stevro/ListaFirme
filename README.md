@@ -34,3 +34,4 @@ Install phantomJS if you want to use the checker from the Finance Ministry. http
 </code></pre>
 
 Lista Firme API documentation can be found at http://www.verificaretva.ro/serviciul_tva_api_web_service.htm 
+Financy Ministry API can be found http://www.mfinante.ro/agenticod.html
