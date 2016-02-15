@@ -15,11 +15,16 @@ new Stev\ListaFirmeBundle\StevListaFirmeBundle()
 Add this in app/config.yml
 <pre><code>
 stev_lista_firme:
+    cifChecker: mFin
     username: demo
     password: demo
     offline: false
-    enabled: true
+    enabled: yes
+    #pathToPhantom is needed if you choose mFin as cifChecker
+    pathToPhantom: path/to/bin/phantomjs' 
 </code></pre>
+
+Install phantomJS if you want to use the checker from the Finance Ministry. http://phantomjs.org/
 
 ## 2. Usage
 <pre><code>
@@ -29,3 +34,5 @@ stev_lista_firme:
 </code></pre>
 
 Lista Firme API documentation can be found at http://www.verificaretva.ro/serviciul_tva_api_web_service.htm 
+
+Finance Ministry API can be found http://www.mfinante.ro/agenticod.html
