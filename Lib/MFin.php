@@ -64,8 +64,14 @@ class MFin extends AbstractCIFChecker implements CIFCheckerInterface {
         if (strtoupper($title->text()) == 'REQUEST REJECTED') {
             throw new \Exception('Site-ul Ministerului de Finante nu este disponibil! Va rugam reincercati in cateva minute.');
         }
-
-        $arr = $crawler->filter('#main table:first-child tr')->each(function(\Symfony\Component\DomCrawler\Crawler $node, $i) {
+        
+        $table = $crawler->filter('#main table:first-child tr');
+        
+        if(!count($table)){
+            throw new \Exception('Site-ul Ministerului de Finante este in mentenanta! Va rugam reincercati in cateva minute.');
+        }
+        
+        $arr = $table->each(function(\Symfony\Component\DomCrawler\Crawler $node, $i) {
             $text = $node->filter('td')->each(function($node, $i) {
                 return trim($node->text());
             });
