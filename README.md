@@ -15,10 +15,13 @@ new Stev\ListaFirmeBundle\StevListaFirmeBundle()
 Add this in app/config.yml
 <pre><code>
 stev_lista_firme:
+    cifChecker: mFin
     username: demo
     password: demo
     offline: false
-    enabled: true
+    enabled: yes
+    #pathToPhantom is needed if you choose mFin as cifChecker
+    pathToPhantom: path/to/bin/phantomjs' 
 </code></pre>
 
 ## 2. Usage
