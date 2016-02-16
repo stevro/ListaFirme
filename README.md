@@ -24,6 +24,8 @@ stev_lista_firme:
     pathToPhantom: path/to/bin/phantomjs' 
 </code></pre>
 
+Possible options for cifChecker are listaFirme, mFin and openApi.
+
 If you want to use Finance Ministry API you must add this to your composer.json
 
 <pre><code>
@@ -45,3 +47,5 @@ If you want to use Finance Ministry API you must add this to your composer.json
 Lista Firme API documentation can be found at http://www.verificaretva.ro/serviciul_tva_api_web_service.htm 
 
 Finance Ministry API can be found http://www.mfinante.ro/agenticod.html
+
+OpenAPI documentation can be found at http://openapi.ro/#company
