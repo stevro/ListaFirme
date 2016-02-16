@@ -6,6 +6,8 @@
 
 namespace Stev\ListaFirmeBundle\Lib;
 
+use GuzzleHttp\Client;
+
 /**
  * Description of ListaFirme
  *
@@ -13,8 +15,7 @@ namespace Stev\ListaFirmeBundle\Lib;
  *
  * http://www.verificaretva.ro/serviciul_tva_api_web_service.htm
  */
-class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface
-{
+class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface {
 
     protected $baseUri = 'http://www.verificaretva.ro/api/apiv2.aspx';
     protected $username = 'demo';
@@ -30,12 +31,17 @@ class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface
 
     /**
      *
+     * @var \Guzzle\Http\Client
+     */
+    protected $client;
+
+    /**
+     *
      * @param string $username
      * @param string $password
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      */
-    public function __construct($username, $password, $offline = false, $enabled = true)
-    {
+    public function __construct($username, $password, $offline = false, $enabled = true) {
         parent::__construct($offline, $enabled);
 
         $this->username = $username;
@@ -51,8 +57,9 @@ class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface
      *
      * 
      */
-    protected function check($cui)
-    {
+    protected function check($cui) {
+        $this->client = new Client();
+
         $date = new \DateTime();
 
         $options['form_params'] = array(
@@ -85,8 +92,7 @@ class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface
       "Stare":"INREGISTRAT DIN DATA 25 AUGUST 2006","Actualizat":"2015/01/14","TVA":"1",
       "TVAincasare":"0","DataTVA":"2015/01/14"}
      */
-    protected function buildResponse($data)
-    {
+    protected function buildResponse($data) {
         $response = new Response();
 
         $response->setNume($data->Nume);

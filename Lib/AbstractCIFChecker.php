@@ -21,12 +21,6 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
     protected $enabled = false;
 
     /**
-     *
-     * @var \Guzzle\Http\Client
-     */
-    protected $client;
-
-    /**
      * 
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      * @param bool $enabled If you set it to false it will completly disable the checker.
@@ -54,8 +48,6 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
         if (true === $this->offline) {
             return $this->mockResponse($cui);
         }
-
-        $this->client = new Client();
 
         $prefix = 'RO';
         if (0 === strpos($cui, $prefix)) {

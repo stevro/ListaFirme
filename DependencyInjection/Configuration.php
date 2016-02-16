@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('stev_lista_firme');
         
-        $supportedCheckers = array(CIFChecker::CHECKER_LISTA_FIRME, CIFChecker::CHECKER_MFIN);
+        $supportedCheckers = array(CIFChecker::CHECKER_LISTA_FIRME, CIFChecker::CHECKER_MFIN, CIFChecker::CHECKER_OPEN_API);
         
         $rootNode
                 ->children()

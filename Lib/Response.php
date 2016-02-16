@@ -12,8 +12,7 @@ namespace Stev\ListaFirmeBundle\Lib;
  *
  * @author stefan
  */
-class Response
-{
+class Response {
 
     private $name;
     private $cui;
@@ -29,151 +28,124 @@ class Response
     private $tvaIncasare;
     private $dataTva;
 
-    public function getNume()
-    {
+    public function getNume() {
         return $this->name;
     }
 
-    public function getCui()
-    {
+    public function getCui() {
         return $this->cui;
     }
 
-    public function getNrInmatr()
-    {
+    public function getNrInmatr() {
         return $this->nrInmatr;
     }
 
-    public function getJudet()
-    {
+    public function getJudet() {
         return $this->judet;
     }
 
-    public function getLocalitate()
-    {
+    public function getLocalitate() {
         return $this->localitate;
     }
 
-    public function getTip()
-    {
+    public function getTip() {
         return $this->tip;
     }
 
-    public function getAdresa()
-    {
+    public function getAdresa() {
         return $this->adresa;
     }
 
-    public function getNr()
-    {
+    public function getNr() {
         return $this->nr;
     }
 
-    public function getStare()
-    {
+    public function getStare() {
         return $this->stare;
     }
 
-    public function getActualizat()
-    {
+    public function getActualizat() {
         return $this->actualizat;
     }
 
-    public function getTva()
-    {
+    public function getTva() {
         return $this->tva;
     }
 
-    public function getTvaIncasare()
-    {
+    public function getTvaIncasare() {
         return $this->tvaIncasare;
     }
 
-    public function getDataTva()
-    {
+    public function getDataTva() {
         return $this->dataTva;
     }
 
-    public function setNume($name)
-    {
+    public function setNume($name) {
         $this->name = $name;
         return $this;
     }
 
-    public function setCui($cui)
-    {
+    public function setCui($cui) {
         $this->cui = $cui;
         return $this;
     }
 
-    public function setNrInmatr($nrInmatr)
-    {
+    public function setNrInmatr($nrInmatr) {
         $this->nrInmatr = $nrInmatr;
         return $this;
     }
 
-    public function setJudet($judet)
-    {
+    public function setJudet($judet) {
         $this->judet = $judet;
         return $this;
     }
 
-    public function setLocalitate($localitate)
-    {
+    public function setLocalitate($localitate) {
         $this->localitate = $localitate;
         return $this;
     }
 
-    public function setTip($tip)
-    {
+    public function setTip($tip) {
         $this->tip = $tip;
         return $this;
     }
 
-    public function setAdresa($adresa)
-    {
+    public function setAdresa($adresa) {
         $this->adresa = $adresa;
         return $this;
     }
 
-    public function setNr($nr)
-    {
+    public function setNr($nr) {
         $this->nr = $nr;
         return $this;
     }
 
-    public function setStare($stare)
-    {
+    public function setStare($stare) {
         $this->stare = $stare;
         return $this;
     }
 
-    public function setActualizat($actualizat)
-    {
+    public function setActualizat($actualizat) {
         $this->actualizat = $actualizat;
         return $this;
     }
 
-    public function setTva($tva)
-    {
+    public function setTva($tva) {
         $this->tva = $tva;
         return $this;
     }
 
-    public function setTvaIncasare($tvaIncasare)
-    {
+    public function setTvaIncasare($tvaIncasare) {
         $this->tvaIncasare = $tvaIncasare;
         return $this;
     }
 
-    public function setDataTva($dataTva)
-    {
+    public function setDataTva($dataTva) {
         $this->dataTva = $dataTva;
         return $this;
     }
 
-    public function getFullAddress()
-    {
+    public function getFullAddress() {
         $address = $this->getJudet() . ' ';
 
         if (strlen($this->getLocalitate()) > 0) {
@@ -193,6 +165,14 @@ class Response
         }
 
         return rtrim($address);
+    }
+
+    public function __toString() {
+        return 'Name: ' . $this->name .
+                ' CUI: ' . $this->cui .
+                ' Nr.Inreg: ' . $this->nrInmatr .
+                ' Full addr: ' . $this->getFullAddress() .
+                ' TVA: ' . $this->tva;
     }
 
 //

@@ -38,7 +38,7 @@ class StevListaFirmeExtension extends Extension {
         $container->setParameter('stev_lista_firme.password', $config['password']);
         $container->setParameter('stev_lista_firme.offline', $config['offline']);
         $container->setParameter('stev_lista_firme.enabled', $config['enabled']);
-        $container->setParameter('stev_lista_firme.pathToPhantom', $config['pathToPhantom']);
+        $container->setParameter('stev_lista_firme.pathToPhantom', isset($config['pathToPhantom']) ? $config['pathToPhantom'] : null );
 
         $loader->load('services.yml');
     }
