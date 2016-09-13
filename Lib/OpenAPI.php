@@ -131,10 +131,16 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
         $response->setNrInmatr($data->numar_reg_com);
         $response->setJudet($data->judet);
 
-        $adresaCompleta = explode(',', $data->adresa);
+        if (isset($data->localitate)) {
+            $response->setLocalitate($data->localitate);
+        } elseif (isset($data->oras)) {
+            $response->setLocalitate($data->oras);
+        } else {
+            $adresaArr = explode(',', $data->adresa);
+            $response->setLocalitate(array_pop($adresaArr));
+        }
 
-        $response->setLocalitate($adresaCompleta[2]);
-        $response->setAdresa($adresaCompleta[0] . ', ' . $adresaCompleta[1]);
+        $response->setAdresa($data->adresa);
         $response->setActualizat($data->stare);
         $response->setTva((bool) $data->tva);
 
