@@ -1,10 +1,13 @@
 # ListaFirme
-Symfony 2 Bundle for Lista Firme API
+Symfony 2 Bundle for Lista Firme API, Ministerul de Finante, si openAPI.ro
+
+!!! Din 15.09.2016 este necesar sa aveti un apiKey pentru openAPI.
+Pentru detalii inregistrati-va pe openapi.ro
 
 ## 1. Installation:
 Add this to composer.json
 <pre><code>
-"stev/lista-firme-bundle": "0.1.*@dev"
+"stev/lista-firme-bundle": "2.0"
 </code></pre>
 
 Add this in app/AppKernel.php
@@ -21,7 +24,9 @@ stev_lista_firme:
     offline: false
     enabled: yes
     #pathToPhantom is needed if you choose mFin as cifChecker
-    pathToPhantom: path/to/bin/phantomjs' 
+    pathToPhantom: path/to/bin/phantomjs'
+    #apiKey is needed only if you work with open starting from 15.09.2016
+    apiKey: your-api-key
 </code></pre>
 
 Possible options for cifChecker are listaFirme, mFin and openApi.
