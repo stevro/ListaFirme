@@ -13,22 +13,34 @@ namespace Stev\ListaFirmeBundle\Lib;
  *
  * http://openapi.ro
  */
-class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface {
+class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
+{
 
-    protected $baseUri = 'http://openapi.ro/api/companies/';
+    protected $baseUri = 'https://api.openapi.ro/api/companies/';
 
     /**
      *
      * @var \Guzzle\Http\Client
      */
     protected $client;
+    protected $apiKey;
 
     /**
      *
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      */
-    public function __construct($offline = false, $enabled = true) {
+    public function __construct($offline = false, $enabled = true, $apiKey)
+    {
         parent::__construct($offline, $enabled);
+
+        $this->apiKey = $apiKey;
+
+        $this->init();
+    }
+
+    private function init()
+    {
+        $this->client = new \GuzzleHttp\Client();
     }
 
     /**
@@ -40,29 +52,41 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface {
      *
      * 
      */
-    protected function check($cui) {
-
-        $this->client = new \GuzzleHttp\Client();
-
-        $this->baseUri .= $cui . '.json';
+    protected function check($cui)
+    {
+        $this->baseUri .= $cui;
 
         try {
-            $response = $this->client->get($this->baseUri);
+
+            $response = $this->client->get($this->baseUri, array('headers' => array('x-api-key' => $this->apiKey)));
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            return null;
+
+            return $e->getMessage();
         }
 
-        if ($response->getStatusCode() != 200) {
-            //CUI-ul nu a fost gasit in OpenAPI
-            return null;
+        switch ($response->getStatusCode()) {
+            case 200:
+                //CIF-ul a fost găsit în baza de date, se returnează datele firmei 
+                return $this->parseResponse($response);
+                break;
+            case 202:
+                //CIF-ul nu a fost găsit în baza de date și este valid
+                return 'CIF-ul nu a fost gasit in baza de date dar este valid';
+                break;
+            default:
+                //CIF-ul nu a fost găsit în baza de date și nu este valid
+                return 'Raspuns necunoscut!';
+                break;
         }
+    }
 
+    protected function parseResponse(\Psr\Http\Message\ResponseInterface $response)
+    {
         $ret = (string) $response->getBody();
 
         $data = json_decode($ret);
 
         if (false === $data || null === $data) {
-            $ret = trim(str_replace(array(' ', '-'), '_', $ret));
 
             throw new \Exception('CUI-ul nu a putut fi validat!');
         }
@@ -73,24 +97,46 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface {
     /**
      * 
      * @param array $data
-     * {"cif":"13548146","address":"B-dul Mihai Viteazu 7",
-     * "city":"Sibiu","fax":null,"name":"Cubus Arts S.R.L.",
-     * "phone":"0269232192","registration_id":"J32/508/2000",
-     * "authorization_number":null,"company_status":"Inregistrat Din Data 23 November 2000",
-     * "state":"Sibiu","vat":"1","zip":"550350",
-     * "created_at":"2012-01-20T21:48:09.000+00:00","updated_at":"2015-05-09T18:10:09.000+00:00","company_status_updated_at":"2000-11-23"}
+     * {
+      "ultima_prelucrare": "2015-06-22",
+      "ultima_declaratie": "2015-06-19",
+      "tva_la_incasare": [],
+      "tva": null,
+      "telefon": null,
+      "stare": "INREGISTRAT din data 25 Februarie 2015",
+      "radiata": false,
+      "numar_reg_com": "J22/314/2015",
+      "meta": {
+      "updated_at": "2016-09-10T00:41:59.028403",
+      "last_changed_at": null
+      },
+      "judet": "Iași",
+      "impozit_profit": null,
+      "impozit_micro": "2015-02-27",
+      "fax": null,
+      "denumire": "Nima Software S.R.L.",
+      "cod_postal": null,
+      "cif": "34150371",
+      "adresa": "Str. Ion Creangă, 52, Iași",
+      "act_autorizare": null,
+      "accize": null
+      }
      */
-    protected function buildResponse($data) {
+    protected function buildResponse($data)
+    {
         $response = new Response();
 
-        $response->setNume($data->name);
+        $response->setNume($data->denumire);
         $response->setCui($data->cif);
-        $response->setNrInmatr($data->registration_id);
-        $response->setJudet($data->state);
-        $response->setLocalitate($data->city);
-        $response->setAdresa($data->address);
-        $response->setActualizat($data->company_status);
-        $response->setTva((bool) $data->vat);
+        $response->setNrInmatr($data->numar_reg_com);
+        $response->setJudet($data->judet);
+
+        $adresaCompleta = explode(',', $data->adresa);
+
+        $response->setLocalitate($adresaCompleta[2]);
+        $response->setAdresa($adresaCompleta[0] . ', ' . $adresaCompleta[1]);
+        $response->setActualizat($data->stare);
+        $response->setTva((bool) $data->tva);
 
         return $response;
     }

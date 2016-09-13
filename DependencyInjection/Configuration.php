@@ -48,6 +48,8 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('pathToPhantom')
                     ->end()
+                    ->scalarNode('apiKey')
+                    ->end()
                 ->end();
 
         return $treeBuilder;

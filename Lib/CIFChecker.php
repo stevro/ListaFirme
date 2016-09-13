@@ -29,7 +29,7 @@ class CIFChecker {
      * @param bool $enabled If you set it to false it will completly disable the checker.
      * @param LoggerInterface
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger) {
+    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null) {
         $this->logger = $logger;
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
@@ -39,7 +39,7 @@ class CIFChecker {
                 $this->checker = new MFin($offline, $enabled, $pathToPhantom);
                 break;
             case self::CHECKER_OPEN_API:
-                $this->checker = new OpenAPI($offline, $enabled);
+                $this->checker = new OpenAPI($offline, $enabled, $apiKey);
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $cifChecker);
@@ -59,12 +59,15 @@ class CIFChecker {
     private function validateResponse($response, $cui) {
 
         if (!$response instanceof Response) {
+            $this->logger->critical('Unable to verify company CUI ' . $cui);
+            $this->logger->critical('The response was ' . (string) $response);
+            
             return false;
         }
 
         if (!$response->getNume() || !$response->getCui() || !$response->getNrInmatr() || !$response->getFullAddress()) {
 
-            $this->logger->critical('Unable to verify company CUI ' . $cui);
+            $this->logger->critical('Unable to find all details of company CUI ' . $cui);
             $this->logger->critical('The response was ' . (string) $response);
 
             return false;
