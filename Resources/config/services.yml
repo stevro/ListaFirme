@@ -9,6 +9,7 @@ services:
             - %stev_lista_firme.enabled%
             - %stev_lista_firme.pathToPhantom%
             - @logger
+            - %stev_lista_firme.apiKey%
 
     stev.lista_firme.validator.is_valid_company:
         class: Stev\ListaFirmeBundle\Validator\Constraints\IsValidCompanyValidator
