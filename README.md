@@ -4,6 +4,8 @@ Symfony 2 Bundle for Lista Firme API, Ministerul de Finante, si openAPI.ro
 !!! Din 15.09.2016 este necesar sa aveti un apiKey pentru openAPI.
 Pentru detalii inregistrati-va pe openapi.ro
 
+Daca folositi OpenAPI si cumva se depaseste limita de interogari se va folosi automat varianta legacy!
+
 ## 1. Installation:
 Add this to composer.json
 <pre><code>
