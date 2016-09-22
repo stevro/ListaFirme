@@ -21,6 +21,12 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
     protected $enabled = false;
 
     /**
+     *
+     * @var \SplObjectStorage
+     */
+    private $fallbacks;
+
+    /**
      * 
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      * @param bool $enabled If you set it to false it will completly disable the checker.
@@ -29,6 +35,22 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
     {
         $this->offline = $offline;
         $this->enabled = $enabled;
+        $this->fallbacks = new \SplObjectStorage();
+    }
+
+    public function addFallback(CIFCheckerInterface $fallbackCIFChecker)
+    {
+        $this->fallbacks->attach($fallbackCIFChecker);
+    }
+
+    public function removeFallback(CIFCheckerInterface $fallbackCIFChecker)
+    {
+        $this->fallbacks->detach($fallbackCIFChecker);
+    }
+
+    public function getFallbacks()
+    {
+        return $this->fallbacks;
     }
 
     abstract protected function check($cui);

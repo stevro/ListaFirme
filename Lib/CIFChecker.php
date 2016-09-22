@@ -12,7 +12,8 @@ namespace Stev\ListaFirmeBundle\Lib;
  *
  * @author stefan
  */
-class CIFChecker {
+class CIFChecker
+{
 
     const CHECKER_LISTA_FIRME = 'listaFirme';
     const CHECKER_MFIN = 'mFin';
@@ -29,7 +30,8 @@ class CIFChecker {
      * @param bool $enabled If you set it to false it will completly disable the checker.
      * @param LoggerInterface
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null) {
+    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null)
+    {
         $this->logger = $logger;
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
@@ -40,28 +42,42 @@ class CIFChecker {
                 break;
             case self::CHECKER_OPEN_API:
                 $this->checker = new OpenAPI($offline, $enabled, $apiKey);
+
+                $fallback = new OpenAPILegacy($offline, $enabled);
+                $this->checker->addFallback($fallback);
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $cifChecker);
         }
     }
 
-    public function checkCompanyByCUI($cui) {
+    public function checkCompanyByCUI($cui)
+    {
         $response = $this->checker->checkCompanyByCUI($cui);
 
         if ($this->validateResponse($response, $cui)) {
             return $response;
         }
 
+        /* @var $fallback CIFCheckerInterface */
+        foreach ($this->checker->getFallbacks() as $fallback) {
+            $response = $fallback->checkCompanyByCUI($cui);
+
+            if ($this->validateResponse($response, $cui)) {
+                return $response;
+            }
+        }
+
         return null;
     }
 
-    private function validateResponse($response, $cui) {
+    private function validateResponse($response, $cui)
+    {
 
         if (!$response instanceof Response) {
             $this->logger->critical('Unable to verify company CUI ' . $cui);
             $this->logger->critical('The response was ' . (string) $response);
-            
+
             return false;
         }
 
