@@ -93,7 +93,7 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
 
         $response->setNume($faker->company . ' ' . 'SRL');
         $response->setCui($cui);
-        $response->setNrInamtr('J40/' . $faker->randomNumber(4) . '/2014');
+        $response->setNrInmatr('J40/' . $faker->randomNumber(4) . '/2014');
         $response->setJudet($faker->citySuffix);
         $response->setLocalitate($faker->city);
         $response->setTip('Str');
