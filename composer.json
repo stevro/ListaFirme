@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.3",
         "symfony/framework-bundle": "2.*",
-        "symfony/symfony": "2.*",
+        "symfony/symfony": "2.8.*",
         "guzzlehttp/guzzle": "6.*",
         "fzaninotto/faker": "1.*",
         "fzaninotto/company-name-generator": "dev-master",
@@ -29,7 +29,7 @@
     "target-dir": "Stev/ListaFirmeBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "1.x-dev"
         }
     },
     "post-install-cmd": [
