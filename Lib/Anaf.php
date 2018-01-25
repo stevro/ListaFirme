@@ -26,7 +26,7 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
 
     /**
      *
-     * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
+     * @param bool $offline Set it to true if the api is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      * @param bool $enabled
      */
     public function __construct($offline = false, $enabled = true) {
