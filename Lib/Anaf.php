@@ -12,10 +12,11 @@ namespace Stev\ListaFirmeBundle\Lib;
  * @author stefan
  *
  * https://static.anaf.ro/static/10/Anaf/Informatii_R/documentatie_SW_26092017.txt
+ * https://webservicesp.anaf.ro/PlatitorTvaRest/api/v3/
  */
 class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
 
-    protected $baseUri = 'https://webservicesp.anaf.ro/PlatitorTvaRest/api/v2/ws/tva';
+    protected $baseUri = 'https://webservicesp.anaf.ro/PlatitorTvaRest/api/v3/ws/tva';
 
     /**
      *
