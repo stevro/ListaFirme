@@ -54,6 +54,7 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
     }
 
     abstract protected function check($cui);
+    abstract protected function getCheckerName();
 
     /**
      * 

@@ -48,6 +48,10 @@ class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface {
         $this->password = $password;
     }
 
+    public function getCheckerName() {
+        return CIFChecker::CHECKER_LISTA_FIRME;
+    }
+    
     /**
      *
      * @param string $cui

@@ -25,6 +25,10 @@ class MFin extends AbstractCIFChecker implements CIFCheckerInterface {
         $this->pathToPhantom = $pathToPhantom;
     }
 
+    public function getCheckerName() {
+        return CIFChecker::CHECKER_MFIN;
+    }
+    
     protected function check($cui) {
 
         $client = PhantomClient::getInstance();

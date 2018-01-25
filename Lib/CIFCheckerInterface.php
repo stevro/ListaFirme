@@ -16,4 +16,6 @@ interface CIFCheckerInterface
     public function checkCompanyByCUI($cui);
     
     public function mockResponse($cui);
+    
+    public function getCheckerName();
 }

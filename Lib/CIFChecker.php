@@ -12,12 +12,12 @@ namespace Stev\ListaFirmeBundle\Lib;
  *
  * @author stefan
  */
-class CIFChecker
-{
+class CIFChecker {
 
     const CHECKER_LISTA_FIRME = 'listaFirme';
     const CHECKER_MFIN = 'mFin';
     const CHECKER_OPEN_API = 'openApi';
+    const CHECKER_ANAF = 'anaf';
 
     private $checker;
     private $logger;
@@ -30,8 +30,7 @@ class CIFChecker
      * @param bool $enabled If you set it to false it will completly disable the checker.
      * @param LoggerInterface
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null)
-    {
+    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null) {
         $this->logger = $logger;
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
@@ -43,6 +42,15 @@ class CIFChecker
             case self::CHECKER_OPEN_API:
                 $this->checker = new OpenAPI($offline, $enabled, $apiKey);
 
+                $fallback = new Anaf($offline, $enabled);
+                $this->checker->addFallback($fallback);
+
+                $fallback1 = new OpenAPILegacy($offline, $enabled);
+                $this->checker->addFallback($fallback1);
+                break;
+            case self::CHECKER_ANAF:
+                $this->checker = new Anaf($offline, $enabled);
+
                 $fallback = new OpenAPILegacy($offline, $enabled);
                 $this->checker->addFallback($fallback);
                 break;
@@ -51,9 +59,10 @@ class CIFChecker
         }
     }
 
-    public function checkCompanyByCUI($cui)
-    {
+    public function checkCompanyByCUI($cui) {
         $response = $this->checker->checkCompanyByCUI($cui);
+
+        $this->logger->info("Calling main checker " . $this->checker->getCheckerName());
 
         if ($this->validateResponse($response, $cui)) {
             return $response;
@@ -61,6 +70,9 @@ class CIFChecker
 
         /* @var $fallback CIFCheckerInterface */
         foreach ($this->checker->getFallbacks() as $fallback) {
+
+            $this->logger->info("Calling fallback checker " . $fallback->getCheckerName());
+
             $response = $fallback->checkCompanyByCUI($cui);
 
             if ($this->validateResponse($response, $cui)) {
@@ -71,8 +83,10 @@ class CIFChecker
         return null;
     }
 
-    private function validateResponse($response, $cui)
-    {
+    private function validateResponse($response, $cui) {
+
+        $this->logger->info('Validating response');
+        $this->logger->debug(serialize($response));
 
         if (!$response instanceof Response) {
             $this->logger->critical('Unable to verify company CUI ' . $cui);
