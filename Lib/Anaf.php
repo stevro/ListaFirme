@@ -56,7 +56,7 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
 
         try {
             $date = new \DateTime();
-            $response = $this->client->post($this->baseUri, array(), array('cui' => $cui, 'data' => $date->format('Y-m-d')));
+            $response = $this->client->post($this->baseUri, array('Content-Type'=>'application/json'), array('cui' => $cui, 'data' => $date->format('Y-m-d')));
 
             return $this->parseResponse($response);
         } catch (\GuzzleHttp\Exception\ClientException $e) {
@@ -66,21 +66,6 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
             return $e->getMessage();
         }
 
-
-//        switch ($response->getStatusCode()) {
-//            case 200:
-//                //CIF-ul a fost găsit în baza de date, se returnează datele firmei 
-//                return $this->parseResponse($response);
-//                break;
-//            case 202:
-//                //CIF-ul nu a fost găsit în baza de date și este valid
-//                return 'CIF-ul nu a fost gasit in baza de date dar este valid';
-//                break;
-//            default:
-//                //CIF-ul nu a fost găsit în baza de date și nu este valid
-//                return 'Raspuns necunoscut!';
-//                break;
-//        }
     }
 
     /**
