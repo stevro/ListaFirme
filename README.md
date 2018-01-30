@@ -20,7 +20,7 @@ new Stev\ListaFirmeBundle\StevListaFirmeBundle()
 Add this in app/config.yml
 <pre><code>
 stev_lista_firme:
-    cifChecker: mFin
+    cifChecker: mFin/anaf/openApi/listaFirme
     username: demo
     password: demo
     offline: false
@@ -31,7 +31,7 @@ stev_lista_firme:
     apiKey: your-api-key
 </code></pre>
 
-Possible options for cifChecker are listaFirme, mFin and openApi.
+Possible options for cifChecker are listaFirme, mFin, openApi and anaf.
 
 If you want to use Finance Ministry API you must add this to your composer.json
 
@@ -56,3 +56,5 @@ Lista Firme API documentation can be found at http://www.verificaretva.ro/servic
 Finance Ministry API can be found http://www.mfinante.ro/agenticod.html
 
 OpenAPI documentation can be found at http://openapi.ro/#company
+
+ANAF API docs https://webservicesp.anaf.ro/PlatitorTvaRest/api/v3/
