@@ -33,6 +33,10 @@ class OpenAPILegacy extends AbstractCIFChecker implements CIFCheckerInterface
         parent::__construct($offline, $enabled);
     }
 
+    public function getCheckerName() {
+        return 'openApiLegacy';
+    }
+    
     /**
      *
      * @param string $cui

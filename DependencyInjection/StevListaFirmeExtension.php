@@ -25,12 +25,6 @@ class StevListaFirmeExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        if ($config['cifChecker'] == \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_LISTA_FIRME) {
-            
-        } elseif ($config['cifChecker'] == \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_MFIN) {
-            
-        }
-
         switch ($config['cifChecker']) {
             case \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_LISTA_FIRME:
                 if (!isset($config['username']) || $config['password']) {
