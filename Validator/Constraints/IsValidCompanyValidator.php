@@ -50,7 +50,9 @@ class IsValidCompanyValidator extends ConstraintValidator {
             $company->setCity($companyVerification->getLocalitate());
         }
         $company->setCountry('RO');
-        $company->setRegistrationNumber($companyVerification->getNrInmatr());
+        if($companyVerification->getNrInmatr()){
+            $company->setRegistrationNumber($companyVerification->getNrInmatr());
+        }
     }
 
 }
