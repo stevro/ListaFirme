@@ -20,7 +20,7 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
 
     /**
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
@@ -50,22 +50,32 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
      * @return array
      * @throws \Exception
      *
-     * 
+     * Momentan functioneaza doar pentru verificarea unui singur CUI.
+     * API-ul de la anaf permite verificare mai multor CUI-uri simultan.
      */
     protected function check($cui) {
 
         try {
             $date = new \DateTime();
-            $response = $this->client->post($this->baseUri, array('Content-Type'=>'application/json'), array('cui' => $cui, 'data' => $date->format('Y-m-d')));
+
+            $body = array(array('cui' => $cui, 'data' => $date->format('Y-m-d')));
+
+            //http://docs.guzzlephp.org/en/latest/request-options.html#json
+            $response = $this->client->request('POST', $this->baseUri, array(
+                'headers' => array(
+                    'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+                ),
+                \GuzzleHttp\RequestOptions::JSON => $body,
+            ));
 
             return $this->parseResponse($response);
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-
+            return $e->getMessage();
+        } catch (\GuzzleHttp\Exception\ServerException $e) {
             return $e->getMessage();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-
     }
 
     /**
@@ -124,7 +134,7 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
             throw new \Exception('CUI-ul nu a putut fi gasit! Va rugam completati datele manual.');
         }
 
-        return $this->buildResponse($data->found);
+        return $this->buildResponse($data->found[0]);
     }
 
     /**
@@ -137,16 +147,6 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
 
         $response->setNume($data->denumire);
         $response->setCui($data->cui);
-//        $response->setNrInmatr($data->numar_reg_com);
-//        $response->setJudet($data->judet);
-//        if (isset($data->localitate)) {
-//            $response->setLocalitate($data->localitate);
-//        } elseif (isset($data->oras)) {
-//            $response->setLocalitate($data->oras);
-//        } else {
-//            $adresaArr = explode(',', $data->adresa);
-//            $response->setLocalitate(array_pop($adresaArr));
-//        }
 
         $response->setAdresa($data->adresa);
         $response->setActualizat($data->data_inceput_ScpTVA);

@@ -95,7 +95,7 @@ class CIFChecker {
             return false;
         }
 
-        if (!$response->getNume() || !$response->getCui() || !$response->getNrInmatr() || !$response->getFullAddress()) {
+        if (!$response->getNume() || !$response->getCui()) {
 
             $this->logger->critical('Unable to find all details of company CUI ' . $cui);
             $this->logger->critical('The response was ' . (string) $response);

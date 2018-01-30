@@ -20,7 +20,7 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
 
     /**
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
     protected $apiKey;
