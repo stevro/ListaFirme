@@ -61,7 +61,7 @@ class ListaFirme extends AbstractCIFChecker implements CIFCheckerInterface {
      *
      * 
      */
-    protected function check($cui) {
+    protected function check($cui, $prefix = null) {
         $this->client = new Client();
 
         $date = new \DateTime();

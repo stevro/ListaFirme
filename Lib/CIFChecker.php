@@ -12,15 +12,27 @@ namespace Stev\ListaFirmeBundle\Lib;
  *
  * @author stefan
  */
-class CIFChecker {
+class CIFChecker
+{
 
     const CHECKER_LISTA_FIRME = 'listaFirme';
     const CHECKER_MFIN = 'mFin';
     const CHECKER_OPEN_API = 'openApi';
     const CHECKER_ANAF = 'anaf';
+    const CHECKER_VIES = 'vies';
 
+    /**
+     *
+     * @var CIFCheckerInterface
+     */
     private $checker;
+
+    /**
+     *
+     * @var \Psr\Log\LoggerInterface
+     */
     private $logger;
+    private $options;
 
     /**
      * @param string $cifChecker
@@ -30,36 +42,107 @@ class CIFChecker {
      * @param bool $enabled If you set it to false it will completly disable the checker.
      * @param LoggerInterface
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null) {
+    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null)
+    {
         $this->logger = $logger;
+
+        $this->options = [
+            'username' => $username,
+            'password' => $password,
+            'offline' => $offline,
+            'enabled' => $enabled,
+            'pathToPhantom' => $pathToPhantom,
+            'logger' => $logger,
+            'apiKey' => $apiKey,
+        ];
+
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
-                $this->checker = new ListaFirme($username, $password, $offline, $enabled);
+                $this->setupCheckers(array(self::CHECKER_LISTA_FIRME, self::CHECKER_VIES));
                 break;
             case self::CHECKER_MFIN:
-                $this->checker = new MFin($offline, $enabled, $pathToPhantom);
+                $this->setupCheckers(array(self::CHECKER_MFIN));
                 break;
             case self::CHECKER_OPEN_API:
-                $this->checker = new OpenAPI($offline, $enabled, $apiKey);
-
-                $fallback = new Anaf($offline, $enabled);
-                $this->checker->addFallback($fallback);
-
-                $fallback1 = new OpenAPILegacy($offline, $enabled);
-                $this->checker->addFallback($fallback1);
+                $this->setupCheckers(array(self::CHECKER_OPEN_API, self::CHECKER_VIES, self::CHECKER_ANAF));
                 break;
             case self::CHECKER_ANAF:
-                $this->checker = new Anaf($offline, $enabled);
-
-                $fallback = new OpenAPILegacy($offline, $enabled);
-                $this->checker->addFallback($fallback);
+                $this->setupCheckers(array(self::CHECKER_ANAF));
+                break;
+            case self::CHECKER_VIES:
+                $this->setupCheckers(array(self::CHECKER_VIES, self::CHECKER_OPEN_API));
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $cifChecker);
         }
+
+        $fallback = new OpenAPILegacy($offline, $enabled);
+        $this->checker->addFallback($fallback);
     }
 
-    public function checkCompanyByCUI($cui) {
+    /**
+     *
+     * @param array $checkers
+     * @param array $options
+     * [
+      'username' => string,
+      'password' => string,
+      'offlien' => bool,
+      'enabled' => bool,
+      'pathToPhantom' => string,
+      'logger' => \Psr\Log\LoggerInterface,
+      'apiKey' => string,
+      ]
+     */
+    public function setupCheckers(array $checkers, array $options = array())
+    {
+        $this->checker = null;
+
+        $options = array_merge($this->options, $options);
+
+        $primary = array_shift($checkers);
+
+        $this->checker = self::createCheckerInstance($primary, $options);
+
+        foreach ($checkers as $fallback) {
+            $fallbackChecker = self::createCheckerInstance($fallback, $options);
+            $this->checker->addFallback($fallbackChecker);
+        }
+    }
+
+    /**
+     *
+     * @param string $checker
+     * @param array $options
+     * @return CIFCheckerInterface
+     * @throws \InvalidArgumentException
+     */
+    private static function createCheckerInstance($checker, array $options)
+    {
+        switch ($checker) {
+            case self::CHECKER_LISTA_FIRME:
+                return new ListaFirme($options['username'], $options['password'], $options['offline'], $options['enabled']);
+                break;
+            case self::CHECKER_MFIN:
+                return new MFin($options['offline'], $options['enabled'], $options['pathToPhantom']);
+                break;
+            case self::CHECKER_OPEN_API:
+                return new OpenAPI($options['offline'], $options['enabled'], $options['apiKey']);
+                break;
+            case self::CHECKER_ANAF:
+                return new Anaf($options['offline'], $options['enabled']);
+                break;
+            case self::CHECKER_VIES:
+                return new Vies($options['offline'], $options['enabled'], $options['logger']);
+                break;
+            default:
+                throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $checker);
+        }
+    }
+
+    public function checkCompanyByCUI($cui)
+    {
+
         $response = $this->checker->checkCompanyByCUI($cui);
 
         $this->logger->info("Calling main checker " . $this->checker->getCheckerName());
@@ -83,7 +166,8 @@ class CIFChecker {
         return null;
     }
 
-    private function validateResponse($response, $cui) {
+    private function validateResponse($response, $cui)
+    {
 
         $this->logger->info('Validating response');
         $this->logger->debug(serialize($response));

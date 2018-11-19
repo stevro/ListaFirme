@@ -53,7 +53,7 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
      * Momentan functioneaza doar pentru verificarea unui singur CUI.
      * API-ul de la anaf permite verificare mai multor CUI-uri simultan.
      */
-    protected function check($cui) {
+    protected function check($cui, $prefix = null) {
 
         try {
             $date = new \DateTime();

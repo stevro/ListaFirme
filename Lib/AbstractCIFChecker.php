@@ -53,7 +53,8 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
         return $this->fallbacks;
     }
 
-    abstract protected function check($cui);
+    abstract protected function check($cui, $prefix = null);
+
     abstract public function getCheckerName();
 
     /**
@@ -75,9 +76,11 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
         $prefix = 'RO';
         if (0 === strpos($cui, $prefix)) {
             $cui = substr($cui, strlen($prefix));
+        } else {
+            $prefix = null;
         }
 
-        return $this->check($cui);
+        return $this->check($cui, $prefix);
     }
 
     /**

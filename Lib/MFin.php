@@ -29,7 +29,7 @@ class MFin extends AbstractCIFChecker implements CIFCheckerInterface {
         return CIFChecker::CHECKER_MFIN;
     }
     
-    protected function check($cui) {
+    protected function check($cui, $prefix = null) {
 
         $client = PhantomClient::getInstance();
         $client->getEngine()->setPath($this->pathToPhantom);
