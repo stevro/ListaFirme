@@ -56,7 +56,7 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
      *
      * 
      */
-    protected function check($cui)
+    protected function check($cui, $prefix = null)
     {
         $this->baseUri .= $cui;
         try {
