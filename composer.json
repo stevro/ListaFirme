@@ -19,7 +19,7 @@
         "guzzlehttp/guzzle": "6.*",
         "fzaninotto/faker": "1.*",
         "fzaninotto/company-name-generator": "dev-master",
-        "jonnyw/php-phantomjs": "4.6.0"
+        "jonnyw/php-phantomjs": "^4.6"
     },
     "autoload": {
         "psr-0": {
