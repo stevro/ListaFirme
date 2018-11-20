@@ -67,11 +67,9 @@ class Vies extends AbstractCIFChecker implements CIFCheckerInterface
             throw new \InvalidArgumentException('vatNumber must be a string. ' . gettype($vatNumber) . ' provided instead');
         }
 
-        $vatNumber = strtoupper(preg_replace("/[^a-zA-Z0-9]/", "", $vatNumber));
+        $vatNumber = \Stev\ListaFirmeBundle\Util\VatNumber::clean($vatNumber);
 
-        $hasPrefix = preg_match('/^[a-zA-Z]{2,3}[0-9a-zA-Z]*$/', $vatNumber);
-
-        if ($hasPrefix) {
+        if (\Stev\ListaFirmeBundle\Util\VatNumber::hasPrefix($vatNumber)) {
             $vat = substr($vatNumber, 2);
             $countryCode = substr($vatNumber, 0, 2);
         } else {
