@@ -36,6 +36,14 @@ class Vies extends AbstractCIFChecker implements CIFCheckerInterface
         parent::__construct($offline, $enabled);
 
         $this->logger = $logger;
+    }
+
+    private function connect()
+    {
+        if ($this->soapClient instanceof \SoapClient) {
+            //reuse the connection
+            return $this->soapClient;
+        }
         try {
             $this->soapClient = new \SoapClient($this->url);
         } catch (\SoapFault $e) {
@@ -59,6 +67,8 @@ class Vies extends AbstractCIFChecker implements CIFCheckerInterface
      */
     protected function check($vatNumber, $prefix = null)
     {
+        $this->connect();
+
         if (!$this->soapClient) {
             return;
         }

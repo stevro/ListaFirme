@@ -31,8 +31,6 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
      */
     public function __construct($offline = false, $enabled = true) {
         parent::__construct($offline, $enabled);
-
-        $this->init();
     }
 
     private function init() {
@@ -54,7 +52,7 @@ class Anaf extends AbstractCIFChecker implements CIFCheckerInterface {
      * API-ul de la anaf permite verificare mai multor CUI-uri simultan.
      */
     protected function check($cui, $prefix = null) {
-
+        $this->init();
         try {
             $date = new \DateTime();
 

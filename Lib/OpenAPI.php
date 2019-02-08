@@ -34,8 +34,6 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
         parent::__construct($offline, $enabled);
 
         $this->apiKey = $apiKey;
-
-        $this->init();
     }
 
     private function init()
@@ -43,10 +41,11 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
         $this->client = new \GuzzleHttp\Client();
     }
 
-    public function getCheckerName() {
+    public function getCheckerName()
+    {
         return CIFChecker::CHECKER_OPEN_API;
     }
-    
+
     /**
      *
      * @param string $cui
@@ -58,6 +57,8 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
      */
     protected function check($cui, $prefix = null)
     {
+        $this->init();
+
         $this->baseUri .= $cui;
         try {
 
