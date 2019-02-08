@@ -42,14 +42,20 @@ class Vies extends AbstractCIFChecker implements CIFCheckerInterface
     {
         if ($this->soapClient instanceof \SoapClient) {
             //reuse the connection
+            $this->logger->info('Reusing SOAP connection for VIES');
             return $this->soapClient;
         }
         try {
-            $this->soapClient = new \SoapClient($this->url);
+            $this->logger->info('Connecting to VIES');
+            $this->soapClient = new \SoapClient($this->url, array("connection_timeout" => 5));
+            $this->logger->info('CONNECTED');
+            return $this->soapClient;
         } catch (\SoapFault $e) {
             $this->logger->alert('Unable to connect to VIES API. Reason: ' . $e->getMessage());
             $this->logger->alert('Soap Fault details: ' . (string) $e);
         }
+
+        $this->logger->alert('The connection to VIES API is timeout');
     }
 
     public function getCheckerName()
