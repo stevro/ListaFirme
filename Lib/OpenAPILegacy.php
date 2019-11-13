@@ -49,9 +49,9 @@ class OpenAPILegacy extends AbstractCIFChecker implements CIFCheckerInterface
     protected function check($cui, $prefix = null)
     {
         $this->client = new \GuzzleHttp\Client();
-        $this->baseUri .= $cui . '.json';
+        $uri = $this->baseUri . $cui . '.json';
         try {
-            $response = $this->client->get($this->baseUri);
+            $response = $this->client->get($uri);
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return null;
         }
