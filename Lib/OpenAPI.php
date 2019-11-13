@@ -59,10 +59,10 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
     {
         $this->init();
 
-        $this->baseUri .= $cui;
+        $uri = $this->baseUri . $cui;
         try {
 
-            $response = $this->client->get($this->baseUri, array('headers' => array('x-api-key' => $this->apiKey)));
+            $response = $this->client->get($uri, array('headers' => array('x-api-key' => $this->apiKey)));
         } catch (\GuzzleHttp\Exception\ClientException $e) {
 
             return $e->getMessage();
