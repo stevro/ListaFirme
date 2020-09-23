@@ -174,7 +174,7 @@ class CIFChecker
 
         if (!$response instanceof Response) {
             $this->logger->critical('Unable to verify company CUI ' . $cui);
-            $this->logger->critical('The response was ' . (string) $response);
+            $this->logger->critical('The response was ' . serialize($response));
 
             return false;
         }
