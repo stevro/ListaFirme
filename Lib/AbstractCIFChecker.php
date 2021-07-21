@@ -62,7 +62,7 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
      * @param string $cui
      * @return null | Response
      */
-    public function checkCompanyByCUI($cui)
+    public function checkCompanyByCUI($cui, $countryCode = null)
     {
 
         if (false === $this->enabled) {
@@ -73,14 +73,11 @@ abstract class AbstractCIFChecker implements CIFCheckerInterface
             return $this->mockResponse($cui);
         }
 
-        $prefix = 'RO';
-        if (0 === strpos($cui, $prefix)) {
-            $cui = substr($cui, strlen($prefix));
-        } else {
-            $prefix = null;
+        if ($countryCode !== null && 0 === strpos($cui, $countryCode)) {
+            $cui = substr($cui, strlen($countryCode));
         }
 
-        return $this->check($cui, $prefix);
+        return $this->check($cui, $countryCode);
     }
 
     /**
