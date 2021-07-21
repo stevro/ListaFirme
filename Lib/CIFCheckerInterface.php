@@ -13,7 +13,7 @@ namespace Stev\ListaFirmeBundle\Lib;
  */
 interface CIFCheckerInterface
 {
-    public function checkCompanyByCUI($cui);
+    public function checkCompanyByCUI($cui, $countryCode = null);
     
     public function mockResponse($cui);
     
