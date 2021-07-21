@@ -140,10 +140,10 @@ class CIFChecker
         }
     }
 
-    public function checkCompanyByCUI($cui)
+    public function checkCompanyByCUI($cui, $countryCode = null)
     {
 
-        $response = $this->checker->checkCompanyByCUI($cui);
+        $response = $this->checker->checkCompanyByCUI($cui, $countryCode);
 
         $this->logger->info("Calling main checker " . $this->checker->getCheckerName());
 
@@ -156,7 +156,7 @@ class CIFChecker
 
             $this->logger->info("Calling fallback checker " . $fallback->getCheckerName());
 
-            $response = $fallback->checkCompanyByCUI($cui);
+            $response = $fallback->checkCompanyByCUI($cui, $countryCode);
 
             if ($this->validateResponse($response, $cui)) {
                 return $response;
