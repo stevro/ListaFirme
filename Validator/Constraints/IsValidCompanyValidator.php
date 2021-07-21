@@ -31,7 +31,7 @@ class IsValidCompanyValidator extends ConstraintValidator {
             if (!in_array(strtoupper($company->getCountry()), array('RO', 'ROMANIA'))) {
                 return;
             }
-            $companyVerification = $this->listaFirme->checkCompanyByCUI($company->getCif());
+            $companyVerification = $this->listaFirme->checkCompanyByCUI($company->getCif(), $company->getCountry());
         } catch (\Exception $e) {
             $this->context->buildViolation($constraint->message)
                     ->setParameter('%string%', $company->getCif())
