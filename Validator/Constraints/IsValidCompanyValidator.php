@@ -6,6 +6,7 @@
 
 namespace Stev\ListaFirmeBundle\Validator\Constraints;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -18,7 +19,12 @@ class IsValidCompanyValidator extends ConstraintValidator {
 
     protected $listaFirme;
 
-    public function __construct(\Stev\ListaFirmeBundle\Lib\CIFChecker $listaFirme) {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    public function __construct(\Stev\ListaFirmeBundle\Lib\CIFChecker $listaFirme, LoggerInterface $logger) {
         $this->listaFirme = $listaFirme;
     }
 
@@ -28,11 +34,11 @@ class IsValidCompanyValidator extends ConstraintValidator {
         }
 
         try {
-            if (!in_array(strtoupper($company->getCountry()), array('RO', 'ROMANIA'))) {
-                return;
-            }
             $companyVerification = $this->listaFirme->checkCompanyByCUI($company->getCif(), $company->getCountry());
         } catch (\Exception $e) {
+
+            $this->logger->error($e->getMessage());
+
             $this->context->buildViolation($constraint->message)
                     ->setParameter('%string%', $company->getCif())
                     ->addViolation();
@@ -49,9 +55,12 @@ class IsValidCompanyValidator extends ConstraintValidator {
         if ($companyVerification->getLocalitate()) {
             $company->setCity($companyVerification->getLocalitate());
         }
-        $company->setCountry('RO');
+
         if($companyVerification->getNrInmatr()){
             $company->setRegistrationNumber($companyVerification->getNrInmatr());
+        }
+        if(is_bool($companyVerification->getTva())){
+            $company->setIsVatPayer($companyVerification->getTva());
         }
     }
 
