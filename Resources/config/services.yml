@@ -13,6 +13,6 @@ services:
 
     stev.lista_firme.validator.is_valid_company:
         class: Stev\ListaFirmeBundle\Validator\Constraints\IsValidCompanyValidator
-        arguments: ['@stev.lista_firme']
+        arguments: ['@stev.lista_firme','@logger']
         tags:
             - { name: validator.constraint_validator, alias: is_valid_company }
