@@ -26,6 +26,7 @@ class IsValidCompanyValidator extends ConstraintValidator {
 
     public function __construct(\Stev\ListaFirmeBundle\Lib\CIFChecker $listaFirme, LoggerInterface $logger) {
         $this->listaFirme = $listaFirme;
+        $this->logger = $logger;
     }
 
     public function validate($company, Constraint $constraint) {
