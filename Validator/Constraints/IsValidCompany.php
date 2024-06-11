@@ -28,7 +28,7 @@ class IsValidCompany extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'is_valid_company';
     }
