@@ -41,7 +41,7 @@ class CIFChecker
      * @param bool $enabled If you set it to false it will completly disable the checker.
      * @param LoggerInterface
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, \Psr\Log\LoggerInterface $logger, $apiKey = null)
+    public function __construct($cifChecker, $username, $password, \Psr\Log\LoggerInterface $logger, $offline = false, $enabled = true, $apiKey = null)
     {
         $this->logger = $logger;
 

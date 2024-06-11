@@ -5,9 +5,9 @@ services:
             - '%stev_lista_firme.cifChecker%'
             - '%stev_lista_firme.username%'
             - '%stev_lista_firme.password%'
+            - '@logger'
             - '%stev_lista_firme.offline%'
             - '%stev_lista_firme.enabled%'
-            - '@logger'
             - '%stev_lista_firme.apiKey%'
 
     stev.lista_firme.validator.is_valid_company:
