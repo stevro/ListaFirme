@@ -23,7 +23,7 @@ class IsValidCompany extends Constraint
     public $message = 'CIF-ul %string% nu este valid.';
     public $details = '%string%';
 
-    public function getTargets() : array|string
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }
