@@ -18,8 +18,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('stev_lista_firme');
+        $treeBuilder = new TreeBuilder('stev_lista_firme');
+        $rootNode = $treeBuilder->getRootNode();
         
         $supportedCheckers = array(CIFChecker::CHECKER_LISTA_FIRME, CIFChecker::CHECKER_OPEN_API, CIFChecker::CHECKER_ANAF, CIFChecker::CHECKER_VIES);
         
