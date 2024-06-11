@@ -16,7 +16,6 @@ class CIFChecker
 {
 
     const CHECKER_LISTA_FIRME = 'listaFirme';
-    const CHECKER_MFIN = 'mFin';
     const CHECKER_OPEN_API = 'openApi';
     const CHECKER_ANAF = 'anaf';
     const CHECKER_VIES = 'vies';
@@ -59,9 +58,6 @@ class CIFChecker
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
                 $this->setupCheckers(array(self::CHECKER_LISTA_FIRME, self::CHECKER_VIES));
-                break;
-            case self::CHECKER_MFIN:
-                $this->setupCheckers(array(self::CHECKER_MFIN));
                 break;
             case self::CHECKER_OPEN_API:
                 $this->setupCheckers(array(self::CHECKER_OPEN_API, self::CHECKER_VIES, self::CHECKER_ANAF));
@@ -122,9 +118,6 @@ class CIFChecker
         switch ($checker) {
             case self::CHECKER_LISTA_FIRME:
                 return new ListaFirme($options['username'], $options['password'], $options['offline'], $options['enabled']);
-                break;
-            case self::CHECKER_MFIN:
-                return new MFin($options['offline'], $options['enabled'], $options['pathToPhantom']);
                 break;
             case self::CHECKER_OPEN_API:
                 return new OpenAPI($options['offline'], $options['enabled'], $options['apiKey']);
