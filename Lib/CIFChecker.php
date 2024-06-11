@@ -118,13 +118,13 @@ class CIFChecker
                 return new ListaFirme($options['username'], $options['password'], $options['offline'], $options['enabled']);
                 break;
             case self::CHECKER_OPEN_API:
-                return new OpenAPI($options['offline'], $options['enabled'], $options['apiKey']);
+                return new OpenAPI($options['apiKey'], $options['offline'], $options['enabled']);
                 break;
             case self::CHECKER_ANAF:
                 return new Anaf($options['offline'], $options['enabled']);
                 break;
             case self::CHECKER_VIES:
-                return new Vies($options['offline'], $options['enabled'], $options['logger']);
+                return new Vies($options['logger'], $options['offline'], $options['enabled']);
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $checker);
