@@ -37,4 +37,6 @@ interface CompanyInterface
     public function setRegistrationNumber($registrationNumber);
 
     public function getRegistrationNumber();
+
+    public function setIsVatPayer($isVatPayer);
 }
