@@ -15,7 +15,6 @@
     "require": {
         "php": ">=7.0",
         "symfony/framework-bundle": "4.* | 5.* | 6.* | 7.*",
-        "symfony/symfony": "4.* | 5.* | 6.* | 7.*",
         "guzzlehttp/guzzle": "7.*"
     },
     "require-dev": {
