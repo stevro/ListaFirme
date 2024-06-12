@@ -16,27 +16,27 @@ interface CompanyInterface
 
     public function getLongName();
 
-    public function setLongName($longName);
+    public function setLongName(string $longName);
 
     public function getCif();
 
-    public function setCif($cif);
+    public function setCif(string $cif);
 
     public function getAddress();
 
-    public function setAddress($address);
+    public function setAddress(?string $address);
 
     public function getCity();
 
-    public function setCity($city);
+    public function setCity(?string $city);
 
     public function getCountry();
 
-    public function setCountry($country);
+    public function setCountry(string $country);
 
-    public function setRegistrationNumber($registrationNumber);
+    public function setRegistrationNumber(?string $registrationNumber);
 
     public function getRegistrationNumber();
 
-    public function setIsVatPayer($isVatPayer);
+    public function setIsVatPayer(bool $isVatPayer);
 }
