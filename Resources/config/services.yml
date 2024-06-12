@@ -1,5 +1,5 @@
 services:
-    stev.lista_firme:
+    Stev\ListaFirmeBundle\Lib\CIFChecker:
         class: Stev\ListaFirmeBundle\Lib\CIFChecker
         arguments:
             - '%stev_lista_firme.cifChecker%'
@@ -10,8 +10,8 @@ services:
             - '%stev_lista_firme.enabled%'
             - '%stev_lista_firme.apiKey%'
 
-    stev.lista_firme.validator.is_valid_company:
+    Stev\ListaFirmeBundle\Validator\Constraints\IsValidCompanyValidator:
         class: Stev\ListaFirmeBundle\Validator\Constraints\IsValidCompanyValidator
-        arguments: ['@stev.lista_firme','@logger']
+        arguments: ['@Stev\ListaFirmeBundle\Lib\CIFChecker','@logger']
         tags:
             - { name: validator.constraint_validator, alias: is_valid_company }
