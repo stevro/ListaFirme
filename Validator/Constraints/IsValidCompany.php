@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
+#[\Attribute]
 class IsValidCompany extends Constraint
 {
 
