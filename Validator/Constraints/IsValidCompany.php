@@ -17,18 +17,19 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
+#[\Attribute]
 class IsValidCompany extends Constraint
 {
 
     public $message = 'CIF-ul %string% nu este valid.';
     public $details = '%string%';
 
-    public function getTargets()
+    public function getTargets(): array|string
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'is_valid_company';
     }

@@ -31,7 +31,7 @@ class Vies extends AbstractCIFChecker implements CIFCheckerInterface
      * WSDL Doc http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl
      * To unblock your IP send an email to TAXUD-VIESWEB@ec.europa.eu
      */
-    public function __construct($offline = false, $enabled = true, \Psr\Log\LoggerInterface $logger)
+    public function __construct( \Psr\Log\LoggerInterface $logger, $offline = false, $enabled = true)
     {
         parent::__construct($offline, $enabled);
 

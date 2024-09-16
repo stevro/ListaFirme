@@ -31,11 +31,6 @@ class StevListaFirmeExtension extends Extension
                     throw new \RuntimeException('Username and password are mandatory for listaFirme checker');
                 }
                 break;
-            case \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_MFIN:
-                if (!isset($config['pathToPhantom'])) {
-                    $config['pathToPhantom'] = $container->getParameter('kernel.root_dir') . '/../bin/phantomjs';
-                }
-                break;
             case \Stev\ListaFirmeBundle\Lib\CIFChecker::CHECKER_OPEN_API:
                 if (!isset($config['apiKey'])) {
                     throw new \RuntimeException('ApiKey is mandatory for OpenAPI checker since 15.09.2016');

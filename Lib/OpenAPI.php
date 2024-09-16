@@ -29,7 +29,7 @@ class OpenAPI extends AbstractCIFChecker implements CIFCheckerInterface
      *
      * @param bool $offline Set it to true if list firme is down or if you want to disable the check. It will make the check to return a mocked(dummy) response.
      */
-    public function __construct($offline = false, $enabled = true, $apiKey)
+    public function __construct($apiKey, $offline = false, $enabled = true)
     {
         parent::__construct($offline, $enabled);
 

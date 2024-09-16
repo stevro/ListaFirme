@@ -16,7 +16,6 @@ class CIFChecker
 {
 
     const CHECKER_LISTA_FIRME = 'listaFirme';
-    const CHECKER_MFIN = 'mFin';
     const CHECKER_OPEN_API = 'openApi';
     const CHECKER_ANAF = 'anaf';
     const CHECKER_VIES = 'vies';
@@ -42,7 +41,7 @@ class CIFChecker
      * @param bool $enabled If you set it to false it will completly disable the checker.
      * @param LoggerInterface
      */
-    public function __construct($cifChecker, $username, $password, $offline = false, $enabled = true, $pathToPhantom = null, \Psr\Log\LoggerInterface $logger, $apiKey = null)
+    public function __construct($cifChecker, $username, $password, \Psr\Log\LoggerInterface $logger, $offline = false, $enabled = true, $apiKey = null)
     {
         $this->logger = $logger;
 
@@ -51,7 +50,6 @@ class CIFChecker
             'password' => $password,
             'offline' => $offline,
             'enabled' => $enabled,
-            'pathToPhantom' => $pathToPhantom,
             'logger' => $logger,
             'apiKey' => $apiKey,
         ];
@@ -59,9 +57,6 @@ class CIFChecker
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
                 $this->setupCheckers(array(self::CHECKER_LISTA_FIRME, self::CHECKER_VIES));
-                break;
-            case self::CHECKER_MFIN:
-                $this->setupCheckers(array(self::CHECKER_MFIN));
                 break;
             case self::CHECKER_OPEN_API:
                 $this->setupCheckers(array(self::CHECKER_OPEN_API, self::CHECKER_VIES, self::CHECKER_ANAF));
@@ -87,9 +82,8 @@ class CIFChecker
      * [
       'username' => string,
       'password' => string,
-      'offlien' => bool,
+      'offline' => bool,
       'enabled' => bool,
-      'pathToPhantom' => string,
       'logger' => \Psr\Log\LoggerInterface,
       'apiKey' => string,
       ]
@@ -123,17 +117,14 @@ class CIFChecker
             case self::CHECKER_LISTA_FIRME:
                 return new ListaFirme($options['username'], $options['password'], $options['offline'], $options['enabled']);
                 break;
-            case self::CHECKER_MFIN:
-                return new MFin($options['offline'], $options['enabled'], $options['pathToPhantom']);
-                break;
             case self::CHECKER_OPEN_API:
-                return new OpenAPI($options['offline'], $options['enabled'], $options['apiKey']);
+                return new OpenAPI($options['apiKey'], $options['offline'], $options['enabled']);
                 break;
             case self::CHECKER_ANAF:
                 return new Anaf($options['offline'], $options['enabled']);
                 break;
             case self::CHECKER_VIES:
-                return new Vies($options['offline'], $options['enabled'], $options['logger']);
+                return new Vies($options['logger'], $options['offline'], $options['enabled']);
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $checker);
