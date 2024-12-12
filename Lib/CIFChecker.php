@@ -56,16 +56,16 @@ class CIFChecker
 
         switch ($cifChecker) {
             case self::CHECKER_LISTA_FIRME:
-                $this->setupCheckers(array(self::CHECKER_LISTA_FIRME, self::CHECKER_VIES));
+                $this->setupCheckers(array(self::CHECKER_LISTA_FIRME, self::CHECKER_VIES, self::CHECKER_ANAF, self::CHECKER_OPEN_API));
                 break;
             case self::CHECKER_OPEN_API:
                 $this->setupCheckers(array(self::CHECKER_OPEN_API, self::CHECKER_VIES, self::CHECKER_ANAF));
                 break;
             case self::CHECKER_ANAF:
-                $this->setupCheckers(array(self::CHECKER_ANAF));
+                $this->setupCheckers(array(self::CHECKER_ANAF, self::CHECKER_VIES, self::CHECKER_OPEN_API));
                 break;
             case self::CHECKER_VIES:
-                $this->setupCheckers(array(self::CHECKER_VIES, self::CHECKER_OPEN_API));
+                $this->setupCheckers(array(self::CHECKER_VIES, self::CHECKER_OPEN_API, self::CHECKER_ANAF));
                 break;
             default:
                 throw new \InvalidArgumentException('You provided an invalid cifChecker ' . $cifChecker);
